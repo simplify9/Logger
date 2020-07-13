@@ -6,6 +6,9 @@
     <Authors>Simplify9</Authors>
     <Product>SimplyWorks.Logger</Product>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/simplify9/Logger</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/simplify9/Logger</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +20,13 @@
     <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
     <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.1.0" />
 
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
