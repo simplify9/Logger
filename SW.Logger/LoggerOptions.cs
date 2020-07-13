@@ -13,6 +13,7 @@ namespace SW.Logger
         {
             ElasticsearchEnvironments = "Development,Staging,Production";
             LoggingLevel = 2;
+            ApplicationName = "unknownapp";
         }
 
         public int LoggingLevel { get; set; }
