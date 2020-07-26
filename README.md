@@ -9,8 +9,24 @@
 
 
 ## Introduction 
-*Logger* is a library extension method that documents any events or incidents onto an [Elasticsearch](https://www.elastic.co/blog/found-elasticsearch-as-nosql) database. The way it works is the backend logs every event that occurs, and saves it. 
+*Logger* is a library extension method that documents any events or incidents onto an [Elasticsearch](https://www.elastic.co/blog/found-elasticsearch-as-nosql) database. With *Logger*, the backend logs every event that occurs, and saves it. 
 
+
+```csharp
+public static class IHostBuilderExtensions
+    {
+        public static IHostBuilder UseSwLogger(this IHostBuilder builder, Action<LoggerOptions> configure = null)
+        {
+            var loggerOptions = new LoggerOptions
+            {
+                ApplicationVersion = Assembly.GetCallingAssembly().GetName().Version.ToString()
+            };
+
+            if (configure != null) configure.Invoke(loggerOptions);
+
+            return builder.UseSerilog((hostBuilderContext, loggerConfiguration) => ConfigureSerilog(hostBuilderContext, loggerConfiguration, loggerOptions));
+        }
+```
 ## Getting Started
 *Logger* is available as a package on [NuGet](https://www.nuget.org/packages/SimplyWorks.Logger/). 
 
