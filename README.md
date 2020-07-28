@@ -17,6 +17,7 @@
 
 To use *Logger*, you will require the [`SeriLog`](https://serilog.net) library. 
 
+## Setting Up *Logger*
 ```csharp
  public class Program
     {
