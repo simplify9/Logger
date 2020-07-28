@@ -5,7 +5,7 @@
 
 | **Package**       | **Version** |
 | :----------------:|:----------------------:|
-|```SimplyWorks.Logger```| ![Nuget](https://img.shields.io/nuget/v/SimplyWorks.Logger?style=for-the-badge)
+|[```SimplyWorks.Logger```](https://www.nuget.org/packages/SimplyWorks.Logger/)| ![Nuget](https://img.shields.io/nuget/v/SimplyWorks.Logger?style=for-the-badge)
 
 
 ## Introduction 
