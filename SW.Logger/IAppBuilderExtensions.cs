@@ -14,7 +14,7 @@ namespace SW.Logger
                 var requestContext = httpContext.RequestServices.GetService<RequestContext>();
                 if (requestContext != null && requestContext.IsValid)
                     using (LogContext.PushProperty(nameof(RequestContext.CorrelationId), requestContext.CorrelationId))
-                    using (LogContext.PushProperty("UserId", requestContext.GetNameIdentifier()))
+                    using (LogContext.PushProperty(nameof(RequestContext.User), requestContext.GetNameIdentifier()))
                     {
                         await next();
                     }
