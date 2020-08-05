@@ -58,8 +58,8 @@ namespace SW.Logger
                         OverwriteTemplate = true,
                         CustomFormatter = new ElasticsearchJsonFormatter(),
                         IndexFormat = $"{loggerOptions.ApplicationName.ToLower()}-{{0:yyyy.MM}}",
-                        NumberOfReplicas = 1,
-                        NumberOfShards = 2,
+                        NumberOfReplicas = 0,
+                        NumberOfShards = 1,                        
                         EmitEventFailure = EmitEventFailureHandling.RaiseCallback,
                         FailureCallback = logEvent =>
                         {
