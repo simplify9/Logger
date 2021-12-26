@@ -8,6 +8,8 @@ using Serilog.Sinks.Elasticsearch;
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
+using Elasticsearch.Net;
 
 namespace SW.Logger
 {
@@ -38,7 +40,6 @@ namespace SW.Logger
                 .WriteTo.Console();
 
             if (hostBuilderContext.HostingEnvironment.IsDevelopment())
-
                 loggerConfiguration = loggerConfiguration
                     .WriteTo.Debug();
 
@@ -47,10 +48,14 @@ namespace SW.Logger
                 loggerConfiguration = loggerConfiguration
                     .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(loggerOptions.ElasticsearchUrl))
                     {
-                        ModifyConnectionSettings = connectionConfig =>
-                        {
-                            return connectionConfig.BasicAuthentication(loggerOptions.ElasticsearchUser, loggerOptions.ElasticsearchPassword);
-                        },
+                        ModifyConnectionSettings = connectionConfig => string.IsNullOrWhiteSpace(loggerOptions.ElasticsearchCertificatePath) ? 
+                            connectionConfig.BasicAuthentication(loggerOptions.ElasticsearchUser, loggerOptions.ElasticsearchPassword) : 
+                            connectionConfig.BasicAuthentication(loggerOptions.ElasticsearchUser, loggerOptions.ElasticsearchPassword)
+                                .ServerCertificateValidationCallback( 
+                                    CertificateValidations.AuthorityIsRoot(
+                                        new X509Certificate(loggerOptions.ElasticsearchCertificatePath)
+                                    )
+                                ),
                         AutoRegisterTemplate = true,
                         AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
                         RegisterTemplateFailure = RegisterTemplateRecovery.IndexAnyway,

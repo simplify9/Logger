@@ -23,6 +23,8 @@ namespace SW.Logger
         public string ElasticsearchUser { get; set; }
         public string ElasticsearchPassword { get; set; }
         public string ElasticsearchEnvironments { get; set; }
+        
+        public string ElasticsearchCertificatePath { get; set; }
 
     }
 }
