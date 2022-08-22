@@ -71,6 +71,7 @@ namespace SW.Logger
                             Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
                             Log.Error("Unable to submit event to Elasticsearch.");
                         },
+                        TypeName = null
                     });
 
             Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
