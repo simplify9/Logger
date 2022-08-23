@@ -7,17 +7,17 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  major: 5
+  major: 3
   minor: 0
   version: $[format('{0}.{1}.{2}', variables['major'], variables['minor'], counter(format('{0}.{1}', variables['major'], variables['minor']), 0))]
   buildConfiguration: 'Release'
 
 steps:
 - task: UseDotNet@2
-  displayName: 'Use .NET Core sdk 5.0.x'
+  displayName: 'Use .NET Core sdk 3.1.x'
   inputs:
     packageType: sdk
-    version: '5.0.x'
+    version: 3.1.101
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
 - task: DotNetCoreCLI@2
