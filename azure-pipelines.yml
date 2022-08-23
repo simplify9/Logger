@@ -2,6 +2,7 @@ name: $(version)
 
 trigger:
 - master
+- releases/* 
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -48,7 +49,6 @@ steps:
     versioningScheme: byBuildNumber
 
 - task: NuGetCommand@2
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
