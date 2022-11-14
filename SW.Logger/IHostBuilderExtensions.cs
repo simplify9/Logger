@@ -30,6 +30,13 @@ namespace SW.Logger
         private static LoggerConfiguration ConfigureSerilog(HostBuilderContext hostBuilderContext, LoggerConfiguration loggerConfiguration, LoggerOptions loggerOptions)
         {
             hostBuilderContext.Configuration.GetSection(LoggerOptions.ConfigurationSection).Bind(loggerOptions);
+            
+            if (!string.IsNullOrEmpty(loggerOptions.ApplicationName))
+            {
+                var (isValid, validationError) = loggerOptions.ApplicationName.IsValidIndexName();
+                if (!isValid)
+                    throw new SWLoggerConfigurationException(validationError);
+            }
 
             loggerConfiguration = loggerConfiguration
                 .MinimumLevel.Is((LogEventLevel)loggerOptions.LoggingLevel)
