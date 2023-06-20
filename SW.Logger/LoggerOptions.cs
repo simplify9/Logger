@@ -12,8 +12,9 @@ namespace SW.Logger
         public LoggerOptions()
         {
             ElasticsearchEnvironments = "Development,Staging,Production";
-            LoggingLevel = 2;
+            LoggingLevel = 3;
             ApplicationName = "unknownapp";
+            ElasticsearchDeleteIndexAfterDays = 90;
         }
 
         public int LoggingLevel { get; set; }
@@ -25,6 +26,7 @@ namespace SW.Logger
         public string ElasticsearchEnvironments { get; set; }
         
         public string ElasticsearchCertificatePath { get; set; }
+        public int ElasticsearchDeleteIndexAfterDays { get; set; }
 
     }
 }
