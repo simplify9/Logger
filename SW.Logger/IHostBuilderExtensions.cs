@@ -16,6 +16,8 @@ namespace SW.Logger
 {
     public static class IHostBuilderExtensions
     {
+        private const string IndexLifecycleName = "index.lifecycle.name";
+
         public static IHostBuilder UseSwLogger(this IHostBuilder builder, Action<LoggerOptions> configure = null)
         {
             var loggerOptions = new LoggerOptions
@@ -75,7 +77,7 @@ namespace SW.Logger
                         TemplateCustomSettings = new Dictionary<string, string>
                         {
                             {
-                                "index.lifecycle.name", loggerOptions.GetPolicyName()
+                                IndexLifecycleName, loggerOptions.GetPolicyName()
                             }
                         },
                         AutoRegisterTemplate = true,
@@ -102,7 +104,7 @@ namespace SW.Logger
 
             return loggerConfiguration; //.ReadFrom.Configuration(hostBuilderContext.Configuration);
         }
-        
+
         private static void CreateLifeCyclePolicy(LoggerOptions loggerOptions)
         {
             var uri = new Uri(loggerOptions.ElasticsearchUrl);
@@ -110,6 +112,7 @@ namespace SW.Logger
             settings.BasicAuthentication(loggerOptions.ElasticsearchUser, loggerOptions.ElasticsearchPassword);
             var client = new ElasticClient(settings);
 
+            // create lifecycle
             client.IndexLifecycleManagement.PutLifecycle(loggerOptions.GetPolicyName(), p =>
                 p.Policy(po => po.Phases(a => a.Delete(w => w
                         .MinimumAge($"{loggerOptions.ElasticsearchDeleteIndexAfterDays}d")
@@ -118,11 +121,19 @@ namespace SW.Logger
                         )
                     )
                 )));
-        
-            var q = 9;
+
+            // apply lifecycle on existing if any
+            client.Indices.UpdateSettings(
+                new UpdateIndexSettingsRequest($"{loggerOptions.ApplicationName.ToLower()}-*")
+                {
+                    IndexSettings = new IndexSettings
+                    {
+                        { IndexLifecycleName, loggerOptions.GetPolicyName() }
+                    }
+                });
         }
 
         private static string GetPolicyName(this LoggerOptions loggerOptions) =>
-            $"serilog-{loggerOptions.ApplicationName.ToLower()}-policy";
+            $"{loggerOptions.ApplicationName.ToLower()}-policy";
     }
 }
