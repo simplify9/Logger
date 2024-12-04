@@ -66,7 +66,8 @@ namespace SW.Logger
                         ModifyConnectionSettings = connectionConfig =>
                             string.IsNullOrWhiteSpace(loggerOptions.ElasticsearchCertificatePath)
                                 ? connectionConfig.BasicAuthentication(loggerOptions.ElasticsearchUser,
-                                    loggerOptions.ElasticsearchPassword)
+                                        loggerOptions.ElasticsearchPassword)
+                                    .ServerCertificateValidationCallback((_, _, _, _) => true)
                                 : connectionConfig.BasicAuthentication(loggerOptions.ElasticsearchUser,
                                         loggerOptions.ElasticsearchPassword)
                                     .ServerCertificateValidationCallback(
