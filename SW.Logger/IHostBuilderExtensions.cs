@@ -91,10 +91,11 @@ namespace SW.Logger
                         NumberOfReplicas = 0,
                         NumberOfShards = 1,
                         EmitEventFailure = EmitEventFailureHandling.RaiseCallback,
-                        FailureCallback = logEvent =>
+                        FailureCallback = (logEvent, exception) =>
                         {
                             Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
                             Log.Error("Unable to submit event to Elasticsearch.");
+                            Log.Error(exception.ToString());
                         },
                         TypeName = null
                     });
