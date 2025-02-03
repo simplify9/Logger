@@ -43,7 +43,7 @@ steps:
   displayName: 'dotnet pack'
   inputs:
     command: pack
-    packagesToPack: 'SW.Logger/SW.Logger.csproj;'
+    packagesToPack: 'SW.Logger/SW.Logger.ElasticSearch.csproj;SW.Logger/SW.Logger.Console.csproj;'
     nobuild: true
     versioningScheme: byBuildNumber
 
