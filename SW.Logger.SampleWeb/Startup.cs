@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using SW.Logger.Console;
 
 namespace SW.Logger.SampleWeb
 {
@@ -25,6 +26,7 @@ namespace SW.Logger.SampleWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+            services.AddSWConsoleLogger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,7 +43,7 @@ namespace SW.Logger.SampleWeb
                 app.UseHsts();
             }
 
-            app.UseSerilogRequestLogging();
+            app.UseSWConsoleLogger();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
