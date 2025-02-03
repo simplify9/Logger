@@ -16,6 +16,11 @@
 
     <ItemGroup>
       <None Remove="Properties\launchSettings.json" />
+      <None Include="..\icon.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+        <Link>icon.png</Link>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
