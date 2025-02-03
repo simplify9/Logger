@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace SW.Logger
+namespace SW.Logger.ElasticSerach
 {
     public static class StringExtensions
     {

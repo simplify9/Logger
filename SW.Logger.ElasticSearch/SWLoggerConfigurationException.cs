@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SW.Logger
+namespace SW.Logger.ElasticSerach
 {
     public class SWLoggerConfigurationException: Exception
     {

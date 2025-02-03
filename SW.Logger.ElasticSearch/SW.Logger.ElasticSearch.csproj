@@ -2,13 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <PackageId>SimplyWorks.Logger</PackageId>
+    <PackageId>SimplyWorks.Logger.ElasticSearch</PackageId>
     <Authors>Simplify9</Authors>
-    <Product>SimplyWorks.Logger</Product>
+    <Product>SimplyWorks.Logger.ElasticSearch</Product>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>https://github.com/simplify9/Logger</PackageProjectUrl>
     <RepositoryUrl>https://github.com/simplify9/Logger</RepositoryUrl>
+    <RootNamespace>SW.Logger.ElasticSearch</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

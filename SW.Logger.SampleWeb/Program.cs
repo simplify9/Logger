@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using SW.Logger.Console;
+using SW.Logger.ElasticSerach;
 
 namespace SW.Logger.SampleWeb
 {
@@ -19,10 +21,11 @@ namespace SW.Logger.SampleWeb
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .UseSwConsoleLogger()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
                 })
-                .UseSwLogger();
+                ;
     }
 }

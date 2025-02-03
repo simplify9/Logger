@@ -5,7 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SW.Logger\SW.Logger.csproj" />
+    <ProjectReference Include="..\SW.Logger.Console\SW.Logger.Console.csproj" />
+    <ProjectReference Include="..\SW.Logger.ElasticSearch\SW.Logger.ElasticSearch.csproj" />
   </ItemGroup>
 
 

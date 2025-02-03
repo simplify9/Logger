@@ -12,13 +12,13 @@ using System.Security.Cryptography.X509Certificates;
 using Elasticsearch.Net;
 using Nest;
 
-namespace SW.Logger
+namespace SW.Logger.ElasticSerach
 {
     public static class IHostBuilderExtensions
     {
         private const string IndexLifecycleName = "index.lifecycle.name";
 
-        public static IHostBuilder UseSwLogger(this IHostBuilder builder, Action<LoggerOptions> configure = null)
+        public static IHostBuilder UseSwElasticSearchLogger(this IHostBuilder builder, Action<LoggerOptions> configure = null)
         {
             var loggerOptions = new LoggerOptions
             {

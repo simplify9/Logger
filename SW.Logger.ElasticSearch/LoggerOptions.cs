@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace SW.Logger
+namespace SW.Logger.ElasticSerach
 {
     public class LoggerOptions
     {

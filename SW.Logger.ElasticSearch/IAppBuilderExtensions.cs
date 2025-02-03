@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Serilog.Context;
 using SW.PrimitiveTypes;
 
-namespace SW.Logger
+namespace SW.Logger.ElasticSerach
 {
     public static class IAppBuilderExtensions
     {
