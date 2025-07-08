@@ -2,15 +2,19 @@
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
-using Serilog.Formatting.Elasticsearch;
-using Serilog.Sinks.Elasticsearch;
+
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using Elastic.Channels;
+using Elastic.Ingest.Elasticsearch;
+using Elastic.Ingest.Elasticsearch.DataStreams;
+using Elastic.Serilog.Sinks;
+using Elastic.Transport;
 using Elasticsearch.Net;
 using Nest;
+using CertificateValidations = Elasticsearch.Net.CertificateValidations;
 
 namespace SW.Logger.ElasticSerach
 {
@@ -61,43 +65,33 @@ namespace SW.Logger.ElasticSerach
             {
                 CreateLifeCyclePolicy(loggerOptions);
                 loggerConfiguration = loggerConfiguration
-                    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(loggerOptions.ElasticsearchUrl))
+                    .WriteTo.Elasticsearch(new[] { new Uri(loggerOptions.ElasticsearchUrl) }, opts =>
                     {
-                        ModifyConnectionSettings = connectionConfig =>
-                            string.IsNullOrWhiteSpace(loggerOptions.ElasticsearchCertificatePath)
-                                ? connectionConfig.BasicAuthentication(loggerOptions.ElasticsearchUser,
-                                        loggerOptions.ElasticsearchPassword)
-                                    .ServerCertificateValidationCallback((_, _, _, _) => true)
-                                : connectionConfig.BasicAuthentication(loggerOptions.ElasticsearchUser,
-                                        loggerOptions.ElasticsearchPassword)
-                                    .ServerCertificateValidationCallback(
-                                        CertificateValidations.AuthorityIsRoot(
-                                            new X509Certificate(loggerOptions.ElasticsearchCertificatePath)
-                                        )
-                                    ),
-                        TemplateCustomSettings = new Dictionary<string, string>
+                        opts.DataStream = new DataStreamName("logs", loggerOptions.ApplicationName.ToLower(), hostBuilderContext.HostingEnvironment.EnvironmentName);
+                        opts.BootstrapMethod = BootstrapMethod.Failure;
+                        opts.ConfigureChannel = channelOpts =>
                         {
+                            channelOpts.BufferOptions = new BufferOptions
                             {
-                                IndexLifecycleName, loggerOptions.GetPolicyName()
-                            }
-                        },
-                        AutoRegisterTemplate = true,
-                        AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
-                        RegisterTemplateFailure = RegisterTemplateRecovery.IndexAnyway,
-                        TemplateName = $"serilog-{loggerOptions.ApplicationName.ToLower()}",
-                        OverwriteTemplate = true,
-                        CustomFormatter = new ElasticsearchJsonFormatter(),
-                        IndexFormat = $"{loggerOptions.ApplicationName.ToLower()}-{{0:yyyy.MM}}",
-                        NumberOfReplicas = 0,
-                        NumberOfShards = 1,
-                        EmitEventFailure = EmitEventFailureHandling.RaiseCallback,
-                        FailureCallback = (logEvent, exception) =>
+
+                            };
+                        };
+                    }, transport =>
+                    {
+                        if (string.IsNullOrWhiteSpace(loggerOptions.ElasticsearchCertificatePath))
                         {
-                            Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
-                            Log.Error("Unable to submit event to Elasticsearch.");
-                            Log.Error(exception.ToString());
-                        },
-                        TypeName = null
+                            transport.Authentication(new BasicAuthentication(loggerOptions.ElasticsearchUser, loggerOptions.ElasticsearchPassword));
+                            transport.ServerCertificateValidationCallback((_, _, _, _) => true);
+                        }
+                        else
+                        {
+                            transport.Authentication(new BasicAuthentication(loggerOptions.ElasticsearchUser, loggerOptions.ElasticsearchPassword));
+                            transport.ServerCertificateValidationCallback(
+                                CertificateValidations.AuthorityIsRoot(
+                                    new X509Certificate(loggerOptions.ElasticsearchCertificatePath)
+                                )
+                            );
+                        }
                     });
             }
 
